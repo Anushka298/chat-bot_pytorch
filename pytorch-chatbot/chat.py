@@ -27,7 +27,7 @@ model.eval()
 
 bot_name = " "
 print("Let's chat! (type 'quit' to exit)")
-while True:
+def chat(sentence):
     # sentence = "do you use credit cards?"
     sentence = input("You: ")
     if sentence == "quit":
@@ -50,4 +50,29 @@ while True:
             if tag == intent["tag"]:
                 print(f" {random.choice(intent['responses'])}")
     else:
-        print(f"{bot_name}: I do not understand...")
+        print(f"{bot_name}: I do not understand...")     
+app = Flask(__name__)
+cors = CORS(app)
+
+@app.route("/", methods=["GET","POST"])
+def working():
+    print(request)
+    return "Working"
+@app.route("/sendChat", methods=["POST"])
+def hello_world():
+    try:
+        sentence=request.json
+        print('text: ', sentence)
+        # print(chat(text))
+        result = chat(sentence['sentence'])
+        res = {}
+        res['result'] = result
+        return res
+    except(error):
+        return error
+@app.route("/texttoquestion", methods=["GET", "POST"])
+def generate():
+    if request.method == "POST":
+        text = request.form.get('key')
+        print(chat(sentence))
+    return chat(sentence)  
